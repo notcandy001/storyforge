@@ -1,4 +1,4 @@
-# The Tale of the Fool — Story Reader
+# The Tale of the Fool  Story Reader
 
 A desktop GUI story reader built with Go + Fyne.
 
@@ -29,7 +29,7 @@ xcode-select --install
 ### Run
 
 ```bash
-git clone <repo>
+git clone https://github.com/notcandy001/storyforge 
 cd foolstory
 go mod tidy
 go run .
