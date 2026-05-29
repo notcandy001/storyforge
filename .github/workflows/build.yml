@@ -2,54 +2,62 @@ name: Build FoolStory
 
 on:
   push:
-    branches:
-      - main
-      - master
-
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
-
-    runs-on: ${{ matrix.os }}
+  ubuntu:
+    name: Build (Ubuntu)
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5
         with:
           go-version: "1.21"
 
-      - name: Install Linux dependencies
-        if: runner.os == 'Linux'
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             gcc \
+            pkg-config \
             libgl1-mesa-dev \
             xorg-dev
 
-      - name: Download dependencies
-        run: go mod download
-
-      - name: Verify
-        run: go vet ./...
+      - name: Download modules
+        run: go mod tidy
 
       - name: Build
-        run: go build -v -o foolstory .
+        run: go build -v ./...
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: foolstory-${{ runner.os }}
-          path: |
-            foolstory*
-            *.exe
+  arch:
+    name: Build (Arch Linux)
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install packages
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm \
+            go \
+            gcc \
+            pkgconf \
+            mesa \
+            libx11 \
+            libxcursor \
+            libxrandr \
+            libxinerama \
+            libxi
+
+      - name: Download modules
+        run: go mod tidy
+
+      - name: Build
+        run: go build -v ./...
