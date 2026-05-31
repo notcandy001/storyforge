@@ -7,53 +7,68 @@ import (
 	"fyne.io/fyne/v2/theme"
 )
 
-// DarkTheme is an elegant dark reading theme.
+// palette:
+// bg      #1a1510
+// fg      #e8ddd0
+// dim     #5c4a38
+// border  #b8a898
+
 type DarkTheme struct{}
 
 var _ fyne.Theme = (*DarkTheme)(nil)
 
+var (
+	bg     = color.NRGBA{R: 0x1a, G: 0x15, B: 0x10, A: 0xff}
+	fg     = color.NRGBA{R: 0xe8, G: 0xdd, B: 0xd0, A: 0xff}
+	dim    = color.NRGBA{R: 0x5c, G: 0x4a, B: 0x38, A: 0xff}
+	border = color.NRGBA{R: 0xb8, G: 0xa8, B: 0x98, A: 0xff}
+	bgL1   = color.NRGBA{R: 0x22, G: 0x1c, B: 0x16, A: 0xff} // slightly lighter bg
+	bgL2   = color.NRGBA{R: 0x2a, G: 0x22, B: 0x1a, A: 0xff} // hover/button
+	divCol = color.NRGBA{R: 0x2e, G: 0x26, B: 0x1e, A: 0xff}
+)
+
 func (t *DarkTheme) Color(name fyne.ThemeColorName, variant fyne.ThemeVariant) color.Color {
 	switch name {
 	case theme.ColorNameBackground:
-		return color.NRGBA{R: 0x10, G: 0x0e, B: 0x17, A: 0xff} // deep night
+		return bg
 	case theme.ColorNameForeground:
-		return color.NRGBA{R: 0xe8, G: 0xe0, B: 0xd5, A: 0xff} // warm white
+		return fg
 	case theme.ColorNamePrimary:
-		return color.NRGBA{R: 0xc4, G: 0x9a, B: 0x6c, A: 0xff} // warm gold
+		return border
 	case theme.ColorNameHover:
-		return color.NRGBA{R: 0x1e, G: 0x1a, B: 0x28, A: 0xff}
+		return bgL2
 	case theme.ColorNameButton:
-		return color.NRGBA{R: 0x1e, G: 0x1a, B: 0x28, A: 0xff}
+		return bgL1
 	case theme.ColorNameDisabledButton:
-		return color.NRGBA{R: 0x2a, G: 0x26, B: 0x33, A: 0xff}
+		return bg
 	case theme.ColorNameInputBackground:
-		return color.NRGBA{R: 0x18, G: 0x15, B: 0x22, A: 0xff}
+		return bgL1
 	case theme.ColorNamePlaceHolder:
-		return color.NRGBA{R: 0x66, G: 0x5e, B: 0x78, A: 0xff}
+		return dim
 	case theme.ColorNameScrollBar:
-		return color.NRGBA{R: 0xc4, G: 0x9a, B: 0x6c, A: 0x60}
+		return color.NRGBA{R: 0xb8, G: 0xa8, B: 0x98, A: 0x60}
 	case theme.ColorNameShadow:
-		return color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 0x88}
+		return color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 0x66}
 	case theme.ColorNameSeparator:
-		return color.NRGBA{R: 0x2a, G: 0x26, B: 0x36, A: 0xff}
+		return divCol
 	case theme.ColorNameSelection:
-		return color.NRGBA{R: 0xc4, G: 0x9a, B: 0x6c, A: 0x44}
+		return color.NRGBA{R: 0xb8, G: 0xa8, B: 0x98, A: 0x44}
 	case theme.ColorNameDisabled:
-		return color.NRGBA{R: 0x44, G: 0x40, B: 0x50, A: 0xff}
+		return dim
 	case theme.ColorNameFocus:
-		return color.NRGBA{R: 0xc4, G: 0x9a, B: 0x6c, A: 0xff}
+		return border
 	case theme.ColorNameHeaderBackground:
-		return color.NRGBA{R: 0x14, G: 0x11, B: 0x1e, A: 0xff}
+		return bg
 	case theme.ColorNameMenuBackground:
-		return color.NRGBA{R: 0x18, G: 0x15, B: 0x22, A: 0xff}
+		return bgL1
 	case theme.ColorNameOverlayBackground:
-		return color.NRGBA{R: 0x18, G: 0x15, B: 0x22, A: 0xee}
+		return bgL1
 	case theme.ColorNameSuccess:
-		return color.NRGBA{R: 0x6c, G: 0xc4, B: 0x9a, A: 0xff}
+		return color.NRGBA{R: 0x98, G: 0xb8, B: 0xa0, A: 0xff}
 	case theme.ColorNameWarning:
-		return color.NRGBA{R: 0xc4, G: 0xb0, B: 0x6c, A: 0xff}
+		return color.NRGBA{R: 0xb8, G: 0xaa, B: 0x80, A: 0xff}
 	case theme.ColorNameError:
-		return color.NRGBA{R: 0xc4, G: 0x6c, B: 0x6c, A: 0xff}
+		return color.NRGBA{R: 0xb8, G: 0x80, B: 0x80, A: 0xff}
 	}
 	return theme.DefaultTheme().Color(name, variant)
 }
