@@ -10,6 +10,11 @@ A desktop GUI story reader built with Go + Fyne.
 - **Progress bar** — shows how far through the story you are
 - **Scroll memory** — each chapter scrolls back to top on navigation
 
+## sneak peek
+<div align="center">
+  <img src="https://github.com/notcandy001/storyforge/blob/main/showcase.png" width="75%" />
+</div>
+
 ## Setup
 
 ### Prerequisites
