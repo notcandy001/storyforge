@@ -22,7 +22,7 @@ func LoadStory() *Story {
 	return &Story{
 		Title:    "The Tale of the Fool",
 		Subtitle: "a love that was never returned, and a silence that never left.",
-		Date:     "31 May 2026",
+		Date:     "30 Dec 2025",
 		Tag:      "personal story",
 		Chapters: []Chapter{
 			{

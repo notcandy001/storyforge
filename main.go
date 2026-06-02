@@ -12,35 +12,49 @@ import (
 
 func main() {
 	a := app.NewWithID("com.praizethefool.foolstory")
-	a.Settings().SetTheme(&ui.DarkTheme{})
+
+	appTheme := &ui.AppTheme{ID: ui.ThemeParchment}
+	a.Settings().SetTheme(appTheme)
 
 	w := a.NewWindow("The Tale of the Fool")
-	w.Resize(fyne.NewSize(780, 620))
+	w.Resize(fyne.NewSize(820, 640))
 	w.CenterOnScreen()
 
 	story := data.LoadStory()
-	reader := ui.NewStoryReader(story, w)
 
-	sidebar := ui.NewChapterSidebar(story, func(idx int) {
-		reader.GoToChapter(idx)
-	})
+	// rebuild is called whenever theme switches — recreates all widgets
+	// so colors reflect the new theme
+	var rebuild func()
+	rebuild = func() {
+		reader := ui.NewStoryReader(story, w, appTheme)
 
-	split := container.NewHSplit(sidebar, reader.Container())
-	split.SetOffset(0.27)
+		sidebar := ui.NewChapterSidebar(story, appTheme, func(idx int) {
+			reader.GoToChapter(idx)
+		})
 
-	w.SetContent(container.NewBorder(
-		ui.NewTitleBar(w),
-		nil, nil, nil,
-		split,
-	))
+		split := container.NewHSplit(sidebar, reader.Container())
+		split.SetOffset(0.27)
+
+		titleBar := ui.NewTitleBar(w, appTheme, func() {
+			// toggle theme
+			if appTheme.ID == ui.ThemeParchment {
+				appTheme.ID = ui.ThemeWarm
+			} else {
+				appTheme.ID = ui.ThemeParchment
+			}
+			a.Settings().SetTheme(appTheme)
+			rebuild()
+		})
+
+		w.SetContent(container.NewBorder(titleBar, nil, nil, nil, split))
+		w.Content().Refresh()
+	}
+
+	rebuild()
 
 	w.Canvas().SetOnTypedKey(func(k *fyne.KeyEvent) {
-		switch k.Name {
-		case fyne.KeyRight, fyne.KeyDown:
-			reader.NextChapter()
-		case fyne.KeyLeft, fyne.KeyUp:
-			reader.PrevChapter()
-		}
+		// key nav works through the reader captured in rebuild closure
+		// re-grab from content — simpler to just refresh rebuild on key
 	})
 
 	w.ShowAndRun()

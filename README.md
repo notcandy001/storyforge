@@ -12,9 +12,9 @@ A desktop GUI story reader built with Go + Fyne.
 
 ## sneak peek
 <div align="center">
+  <img src="https://github.com/notcandy001/storyforge/blob/main/showcase2.png" width="100%" />
   <img src="https://github.com/notcandy001/storyforge/blob/main/showcase.png" width="100%" />
 </div>
-
 ## Setup
 
 ### Prerequisites
